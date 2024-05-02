@@ -88,7 +88,8 @@ class RemoveFromCart(RetrieveDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         instance = self.get_object()  # دریافت شیء مربوطه بر اساس شناسه ارسالی
         self.perform_destroy(instance)  # حذف شیء
-        return Response(status=status.HTTP_204_NO_CONTENT)  # پاسخ موفقیت‌آمیز
+        return Response({'message': 'محصول مورد نظر با موفقیت از سبد خرید شما حذف شد.'},
+                        status=status.HTTP_204_NO_CONTENT)  # پاسخ موفقیت‌آمیز
 
 
 class Checkout(APIView):
