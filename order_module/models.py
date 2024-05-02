@@ -11,7 +11,7 @@ USER = get_user_model()
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     is_paid = models.BooleanField(default=False)
-    is_payment = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    is_payment = models.DateField(null=True, blank=True)
     order_detail = models.ManyToManyField('OrderDetail', related_name='order-detail+')
 
     def __str__(self):

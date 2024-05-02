@@ -37,11 +37,11 @@ class AddToCart(CreateAPIView):
 
 
 class ViewCart(ListAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     serializer_class = OrderDetailSerializer
 
     def get_queryset(self):
-        user = self.request.user
+        user = self.request.user.id
         if user:
             order = Order.objects.filter(user=user).first()
             if order:
