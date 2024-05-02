@@ -92,25 +92,25 @@ class RemoveFromCart(RetrieveDestroyAPIView):
                         status=status.HTTP_204_NO_CONTENT)  # پاسخ موفقیت‌آمیز
 
 
-class Checkout(APIView):
-    permission_classes = [IsAuthenticated]
-
-    # @login_required
-    def post(self, request):
-        # دریافت اطلاعات از درخواست
-        delivery_address = request.data.get('delivery_address')
-        payment_method = request.data.get('payment_method')
-
-        # یافتن سبد خرید کاربر
-        order = Order.objects.filter(user=request.user, is_paid=False).first()
-
-        if order:
-            order.is_paid = True
-            order.save()
-
-            return Response({"message": "سفارش با موفقیت ثبت شد."}, status=status.HTTP_200_OK)
-        else:
-            return Response({"message": "سبد خرید خالی است."}, status=status.HTTP_204_NO_CONTENT)
+# class Checkout(APIView):
+#     permission_classes = [IsAuthenticated]
+#
+#     # @login_required
+#     def post(self, request):
+#         # دریافت اطلاعات از درخواست
+#         delivery_address = request.data.get('delivery_address')
+#         payment_method = request.data.get('payment_method')
+#
+#         # یافتن سبد خرید کاربر
+#         order = Order.objects.filter(user=request.user, is_paid=False).first()
+#
+#         if order:
+#             order.is_paid = True
+#             order.save()
+#
+#             return Response({"message": "سفارش با موفقیت ثبت شد."}, status=status.HTTP_200_OK)
+#         else:
+#             return Response({"message": "سبد خرید خالی است."}, status=status.HTTP_204_NO_CONTENT)
 
 
 # Zarinpal
@@ -149,8 +149,11 @@ class PaymentView(APIView):
             if response.status_code == 200:
                 response_data = response.json()
                 if response_data['Status'] == 100:
-                    return Response({'status': True, 'url': ZP_API_STARTPAY + str(response_data['Authority']),
-                                     'authority': response_data['Authority']}, status=status.HTTP_200_OK)
+                    return Response({
+                        'status': True,
+                        'payment_url': ZP_API_STARTPAY + str(response_data['Authority']),
+                        'authority': response_data['Authority']
+                    }, status=status.HTTP_200_OK)
                 else:
                     return Response({'status': False, 'code': str(response_data['Status'])},
                                     status=status.HTTP_400_BAD_REQUEST)
