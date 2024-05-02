@@ -37,15 +37,16 @@ class AddToCart(CreateAPIView):
 
 
 class ViewCart(ListAPIView):
-    # permission_classes = [IsAuthenticated]
     serializer_class = OrderDetailSerializer
 
+    # # دریافت سبد خرید کاربر فعلی
     def get_queryset(self):
-        user = self.request.user.id
-        if user:
-            order = Order.objects.filter(user=user).first()
-            if order:
-                return order.orderdetail_set.all()
+        user = self.request.user
+        if user.is_authenticated:
+            try:
+                return user.order_set.first().order_detail.all()
+            except Order.DoesNotExist:
+                return OrderDetail.objects.none()
         return OrderDetail.objects.none()
 
     def list(self, request, *args, **kwargs):
