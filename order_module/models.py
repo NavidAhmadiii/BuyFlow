@@ -39,11 +39,17 @@ class OrderDetail(models.Model):
         return f"OrderDetail: {self.order} - {self.product}"
 
     def save(self, *args, **kwargs):
-        self.final_price = self.calculate_final_price()
-        super().save(*args, **kwargs)
-
-    def calculate_final_price(self):
         if self.final_price is not None and self.count is not None:
-            return self.final_price * self.count
+            self.final_price = self.price * self.count
         else:
-            return 0  # یا مقدار دیگری برای قیمت نهایی
+            self.final_price = 0
+        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.final_price = self.calculate_final_price()
+    #     super().save(*args, **kwargs)
+    #
+    # def calculate_final_price(self):
+    #     if self.final_price is not None and self.count is not None:
+    #         return self.final_price * self.count
+    #     else:
+    #         return 0  # یا مقدار دیگری برای قیمت نهایی
