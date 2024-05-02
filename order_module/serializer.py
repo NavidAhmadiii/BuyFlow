@@ -6,11 +6,18 @@ USER = get_user_model()
 
 
 class OrderDetailSerializer(serializers.ModelSerializer):
-    # user = serializers.PrimaryKeyRelatedField(queryset=USER.objects.all(), required=False)
-
     class Meta:
         model = OrderDetail
-        fields = ['id', 'order', 'product', 'final_price', 'count']
+        fields = ['order', 'product', 'price', 'count']
+
+    def create(self, validated_data):
+        # ایجاد یک نمونه از OrderDetail با استفاده از داده‌های اعتبارسنجی شده
+        return OrderDetail.objects.create(
+            order=validated_data['order'],
+            product=validated_data['product'],
+            price=validated_data['price'],
+            count=validated_data['count']
+        )
 
 
 class OrderSerializer(serializers.ModelSerializer):

@@ -9,7 +9,6 @@ from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView,
     DestroyAPIView
 import requests
 import json
-
 from .models import Order, OrderDetail
 from .serializer import OrderSerializer, OrderDetailSerializer
 
@@ -33,23 +32,8 @@ class OrderDetailView(RetrieveUpdateDestroyAPIView):
 
 
 class AddToCart(CreateAPIView):
-    # permission_classes = [IsAuthenticated]
+    queryset = OrderDetail.objects.all()
     serializer_class = OrderDetailSerializer
-
-    # @login_required
-    def post(self, request, *args, **kwargs):
-        user = self.request.user
-        product_id = request.data.get('product_id')
-        count = request.data.get('count')
-        # request.data['user'] = user.id
-
-        # create a new order
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class ViewCart(ListAPIView):
