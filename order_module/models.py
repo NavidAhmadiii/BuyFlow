@@ -17,19 +17,20 @@ class Order(models.Model):
     def __str__(self):
         return f"Order for {self.user}"
 
-    def calculate_total_price(self):
-        total_amount = 0
-        if self.is_paid:
-            for order_detail in self.orderdetail_set.all():
-                total_amount += order_detail.final_price * order_detail.count
-        else:
-            for order_detail in self.orderdetail_set.all():
-                total_amount += order_detail.product.price * order_detail.count
-        return total_amount
+    # def calculate_total_price(self):
+    #     total_amount = 0
+    #     if self.is_paid:
+    #         for order_detail in self.orderdetail_set.all():
+    #             total_amount += order_detail.final_price * order_detail.count
+    #     else:
+    #         for order_detail in self.orderdetail_set.all():
+    #             total_amount += order_detail.product.price * order_detail.count
+    #     return total_amount
 
 
 class OrderDetail(models.Model):
     order = models.ForeignKey(Order, models.CASCADE)
+    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     count = models.IntegerField()
@@ -44,12 +45,3 @@ class OrderDetail(models.Model):
         else:
             self.final_price = 0
         super().save(*args, **kwargs)
-    # def save(self, *args, **kwargs):
-    #     self.final_price = self.calculate_final_price()
-    #     super().save(*args, **kwargs)
-    #
-    # def calculate_final_price(self):
-    #     if self.final_price is not None and self.count is not None:
-    #         return self.final_price * self.count
-    #     else:
-    #         return 0  # یا مقدار دیگری برای قیمت نهایی

@@ -1,8 +1,5 @@
-from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from .models import Order, OrderDetail
-
-USER = get_user_model()
 
 
 class OrderDetailSerializer(serializers.ModelSerializer):
@@ -10,7 +7,7 @@ class OrderDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderDetail
-        fields = ['id', 'order', 'product', 'price', 'count', 'user']
+        fields = ['id', 'order', 'product', 'price', 'count', 'user', 'final_price']
 
     def create(self, validated_data):
         # ایجاد یک نمونه از OrderDetail با استفاده از داده‌های اعتبارسنجی شده

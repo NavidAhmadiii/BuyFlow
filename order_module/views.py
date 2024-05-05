@@ -5,8 +5,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView, \
-    DestroyAPIView, RetrieveDestroyAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveDestroyAPIView
 import requests
 import json
 from .models import Order, OrderDetail
@@ -32,8 +31,17 @@ class OrderDetailView(RetrieveDestroyAPIView):
 
 
 class AddToCart(CreateAPIView):
-    queryset = OrderDetail.objects.all()
     serializer_class = OrderDetailSerializer
+
+    def post(self, request, price=None, *args, **kwargs):
+        product_id = request.data.get('product_id')
+        count = request.data.get('count')
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class ViewCart(ListAPIView):
@@ -57,28 +65,6 @@ class ViewCart(ListAPIView):
         else:
             return Response({"message": "سبد خرید خالی است."}, status=status.HTTP_204_NO_CONTENT)
 
-
-# class RemoveFromCart(DestroyAPIView):
-#     permission_classes = [IsAuthenticated]
-#
-#     # @login_required
-#     def destroy(self, request, product_id):
-#         # یافتن سبد خرید کاربر
-#         order = Order.objects.filter(user=request.user, is_paid=False).first()
-#
-#         if order:
-#             # حذف جزئیات سفارش مربوط به محصول
-#             order_detail = order.orderdetail_set.filter(product_id=product_id).first()
-#             if order_detail:
-#                 order_detail.delete()
-#                 return Response({"message": "محصول با موفقیت از سبد خرید حذف شد."}, status=status.HTTP_200_OK)
-#             else:
-#                 return Response({"error": "محصول در سبد خرید یافت نشد."}, status=status.HTTP_404_NOT_FOUND)
-#         else:
-#             return Response({"message": "سبد خرید خالی است."}, status=status.HTTP_204_NO_CONTENT)
-
-
-# ثبت سفارش
 
 class RemoveFromCart(RetrieveDestroyAPIView):
     queryset = OrderDetail.objects.all()
