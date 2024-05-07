@@ -1,8 +1,6 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveDestroyAPIView
@@ -78,29 +76,6 @@ class RemoveFromCart(RetrieveDestroyAPIView):
                         status=status.HTTP_204_NO_CONTENT)  # پاسخ موفقیت‌آمیز
 
 
-# class Checkout(APIView):
-#     permission_classes = [IsAuthenticated]
-#
-#     # @login_required
-#     def post(self, request):
-#         # دریافت اطلاعات از درخواست
-#         delivery_address = request.data.get('delivery_address')
-#         payment_method = request.data.get('payment_method')
-#
-#         # یافتن سبد خرید کاربر
-#         order = Order.objects.filter(user=request.user, is_paid=False).first()
-#
-#         if order:
-#             order.is_paid = True
-#             order.save()
-#
-#             return Response({"message": "سفارش با موفقیت ثبت شد."}, status=status.HTTP_200_OK)
-#         else:
-#             return Response({"message": "سبد خرید خالی است."}, status=status.HTTP_204_NO_CONTENT)
-
-
-# Zarinpal
-# ? sandbox merchant
 if settings.SANDBOX:
     sandbox = 'sandbox'
 else:

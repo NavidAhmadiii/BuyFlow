@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from product_module.models import Product
-from django.conf import settings
+from user_module.models import CustomUser
 
 # Create your models here.
 
@@ -9,23 +9,13 @@ USER = get_user_model()
 
 
 class Order(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     is_paid = models.BooleanField(default=False)
     is_payment = models.DateField(null=True, blank=True)
     order_detail = models.ManyToManyField('OrderDetail', related_name='order-detail+')
 
     def __str__(self):
         return f"Order for {self.user}"
-
-    # def calculate_total_price(self):
-    #     total_amount = 0
-    #     if self.is_paid:
-    #         for order_detail in self.orderdetail_set.all():
-    #             total_amount += order_detail.final_price * order_detail.count
-    #     else:
-    #         for order_detail in self.orderdetail_set.all():
-    #             total_amount += order_detail.product.price * order_detail.count
-    #     return total_amount
 
 
 class OrderDetail(models.Model):
