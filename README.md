@@ -2,7 +2,8 @@
 
 
 ## If you want to use this project, you can install and use the project packages with the following command:
-```bash pip install requierments.txt
+```bash
+ pip install requierments.txt
 ```
 
 
