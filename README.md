@@ -1,5 +1,11 @@
 # This is an exercise project that I wrote during my internship in IELTSways Academy These codes are for implementing a shopping cart as well as products.
 
+
+## If you want to use this project, you can install and use the project packages with the following command:
+```bash pip install requierments.txt
+```
+
+
 ## The APIs I wrote for this project are as follows:
   - An API for user login
   - An API for products
