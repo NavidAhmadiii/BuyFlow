@@ -1,4 +1,4 @@
-This is an exercise project that I wrote during my internship in IELTS ways series
+This is an exercise project that I wrote during my internship in IELTSways Academy
 These codes are for implementing a shopping cart as well as products.
 
 The APIs I wrote for this project are as follows:
