@@ -12,9 +12,7 @@
   - An API for products
   - An API for the shopping cart
 ## Each of which has different parts.
-
 -----------------------------------------------------------------------
-
 ### Ednpoint for user login 
 - The login API is available at this address  `login/`
 - The register API is available at this address  `register/`
